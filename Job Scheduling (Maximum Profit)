@@ -1,0 +1,61 @@
+package com.kodnest.infodoc.intro;
+
+import java.util.*;
+public class jobScheduling {
+
+    public static int[] scheduleJobs(int[] deadline, int[] profit) {
+        int n = deadline.length;
+
+        // Step 1: Create Job objects
+        job[] jobs = new job[n];
+        for (int i = 0; i < n; i++) {
+            jobs[i] = new job(deadline[i], profit[i]);
+        }
+
+        // Step 2: Sort jobs by profit in descending order
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
+
+        // Step 3: Find maximum deadline to create schedule array
+        int maxDeadline = Arrays.stream(deadline).max().getAsInt();
+        int[] schedule = new int[maxDeadline + 1]; // 1-based index
+        Arrays.fill(schedule, -1); // -1 indicates free day
+
+        int totalProfit = 0;
+        int countJobs = 0;
+
+        // Step 4: Schedule jobs
+        for (job job : jobs) {
+            // Try to find a free day from job.deadline down to 1
+            for (int day = job.deadline; day > 0; day--) {
+                if (schedule[day] == -1) {
+                    schedule[day] = job.profit;
+                    totalProfit += job.profit;
+                    countJobs++;
+                    break;
+                }
+            }
+        }
+
+        return new int[]{countJobs, totalProfit};
+    }
+
+    public static void main(String[] args) {
+        int[] deadline = {4, 1, 1, 1};
+        int[] profit = {20, 10, 40, 30};
+
+        int[] result = scheduleJobs(deadline, profit);
+        System.out.println("Jobs Done: " + result[0]);
+        System.out.println("Maximum Profit: " + result[1]);
+    }
+}
+
+public class job{
+			int deadline;
+			int profit;
+			
+			public job(int d,int p){
+				this.deadline=d;
+				this.profit=p;
+			}
+		}
+		
