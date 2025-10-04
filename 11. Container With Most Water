@@ -1,0 +1,26 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int max_area=0;
+        int left=0;
+        int right=height.length-1;
+        while(left<right){
+            max_area=Math.max(max_area,(right-left)*Math.min(height[left],height[right]));
+            if(height[left]<height[right]){
+                left++;
+            }
+            else{
+                right--;;
+            }
+        }
+        return max_area;
+    }
+}
+
+
+**thought process**
+
+=>initialize the max_area with 0 and assign left=0 and right is the length of the hieght-1
+=> until left <right we have to loop it meanwhile calculate max_area applying logic
+=>after getting max_area check using control construct if heght of left < height of right 
+then will increase the left else increase right
+=>after eaching the condition where left>right will return max_area
